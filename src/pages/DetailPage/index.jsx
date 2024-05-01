@@ -10,6 +10,7 @@ import { Balance } from '../../assets/Balance';
 import { Vector } from '../../assets/Vector';
 import Type from '../../components/Type';
 import BaseStat from '../../components/BaseStat';
+import DamageRelations from '../../components/DamageRelations';
 
 
 
@@ -31,11 +32,10 @@ const DetailPage = () => {
 
       if(pokemonData) {
         const {name, id, types, weight, height, stats, abilities } = pokemonData;
-        const nextAndPreviousPokemon = await getNextAndPeviousPokemon(id);
-        // console.log(stats);
+        const nextAndPreviousPokemon = await getNextAndPeviousPokemon(id);        
 
         const DamageRelations = await Promise.all(
-          types.map(async(i) => {
+          types.map(async (i) => {
             const type = await axios.get(i.type.url);
             return type.data.damage_relations
           })
@@ -51,8 +51,7 @@ const DetailPage = () => {
           stats: formatPokemonStats(stats),
           DamageRelations,
           types: types.map(type => type.type.name)
-        }     
-        console.log(formattedPokemonData)
+        }             
         setPokemon(formattedPokemonData)
         setIsLoading(false);
       }           
@@ -60,7 +59,7 @@ const DetailPage = () => {
       console.log(error);     
       setIsLoading(false); 
     }
-  }
+  }  
 
   const formatPokemonAbilities = (abilities) => {    
     return abilities.filter((_, index) => index <= 1).map((obj) => obj.ability.name.replaceAll('-',' '))
@@ -115,8 +114,6 @@ const DetailPage = () => {
   const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`
   const bg = `bg-${pokemon?.types?.[0]}`;
   const text = `text-${pokemon?.types?.[0]}`;
-  console.log(img, bg, text)
-  console.log(pokemon.previous)
   return (
     <article className='flex items-center gap-1 flex-col w-full'>
       <div className={`${bg} w-auto h-full flex flex-col z-0 items-center justify-end relative overflow-hidden`}> 
@@ -135,7 +132,7 @@ const DetailPage = () => {
         <section className='w-full flex flex-col z-20 items-center justify-end relative h-full'>
           <div className='absolute z-30 top-6 flex items-center w-full justify-between px-2'>
             <div className='flex items-center gap-1'>
-              <Link>
+              <Link to={'/'}>
                 <ArrowLeft className='w-6 h-8 text-zinc-200' />
               </Link>
               <h1 className='text-zinc-200 font-bold text-xl capitalize'>
@@ -203,7 +200,7 @@ const DetailPage = () => {
           {pokemon.DamageRelations && (
             <div className='w-10/12'>
               <h2 className={`text-base text-center font-semibold ${text}`}>
-                데미지 관계
+                <DamageRelations damages={pokemon.DamageRelations} />
               </h2>
               데미지
             </div>
