@@ -5,8 +5,8 @@ const Type = ({type, damageValue}) => {
   
   
   return (
-    <div>
-      <span className={`h-[1.5rem] py-1 px-3 rounded-2xl ${bg} font-bold text-zinc-800 text-[0.6rem] leading-[0.8rem] capitalize flex gap-1 justify-center items-center`}>
+    <div className={`h-[1.5rem] py-1 px-3 rounded-2xl ${bg} font-bold text-zinc-800 text-[0.6rem] leading-[0.8rem] capitalize flex gap-1 justify-center items-center`}>
+      <span>
         {type}
       </span>
       {damageValue && (
